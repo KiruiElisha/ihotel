@@ -1,0 +1,393 @@
+/* =============================================
+   Hotel Overview - Modern Landing Page Styles
+   ============================================= */
+
+.ho-wrapper {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 24px 24px 48px;
+}
+
+/* ---------- Welcome Section ---------- */
+.ho-welcome-card {
+    background: linear-gradient(135deg, var(--card-bg, #ffffff), rgba(79, 70, 229, 0.02));
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 20px;
+    padding: 48px;
+    margin-bottom: 48px;
+    box-shadow: 0 1px 3px rgba(0, 15, 30, 0.08), 0 1px 2px rgba(0, 15, 30, 0.04);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.ho-welcome-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4f46e5, #7c3aed, #ec4899);
+}
+
+.ho-welcome-content h1 {
+    font-size: 42px;
+    font-weight: 800;
+    color: var(--text-color, #1e293b);
+    margin: 0 0 16px 0;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+}
+
+.ho-welcome-content p {
+    font-size: 18px;
+    color: var(--text-muted, #64748b);
+    margin: 0 0 32px 0;
+    line-height: 1.6;
+    font-weight: 500;
+}
+
+.ho-welcome-stats {
+    display: flex;
+    gap: 32px;
+}
+
+.ho-stat-item {
+    text-align: center;
+}
+
+.ho-stat-number {
+    font-size: 36px;
+    font-weight: 800;
+    color: #4f46e5;
+    margin-bottom: 8px;
+    letter-spacing: -0.025em;
+}
+
+.ho-stat-label {
+    font-size: 14px;
+    color: var(--text-muted, #64748b);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.75px;
+}
+
+.ho-welcome-visual {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.ho-icon-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+}
+
+.ho-icon-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 24px;
+    background: rgba(79, 70, 229, 0.03);
+    border: 1px solid rgba(79, 70, 229, 0.1);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ho-icon-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(79, 70, 229, 0.1);
+    border-color: #4f46e5;
+}
+
+.ho-icon-item svg {
+    width: 32px;
+    height: 32px;
+    color: #4f46e5;
+}
+
+.ho-icon-item span {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text-color, #1e293b);
+}
+
+/* ---------- Quick Actions ---------- */
+.ho-quick-actions {
+    margin-bottom: 48px;
+}
+
+.ho-quick-actions h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-color, #1e293b);
+    margin: 0 0 32px 0;
+    letter-spacing: -0.025em;
+}
+
+.ho-action-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+.ho-action-card {
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 24px;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
+}
+
+.ho-action-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 15, 30, 0.1);
+    text-decoration: none;
+    color: inherit;
+}
+
+.ho-action-icon {
+    width: 56px;
+    height: 56px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.ho-action-icon.rooms {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.ho-action-icon.guests {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.ho-action-icon.reservations {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.ho-action-icon.checkins {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.ho-action-icon svg {
+    width: 24px;
+    height: 24px;
+    color: white;
+    z-index: 1;
+}
+
+.ho-action-content h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-color, #1e293b);
+    margin: 0 0 8px 0;
+    letter-spacing: -0.025em;
+}
+
+.ho-action-content p {
+    font-size: 14px;
+    color: var(--text-muted, #64748b);
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* ---------- System Features ---------- */
+.ho-features {
+    margin-bottom: 48px;
+}
+
+.ho-features h2 {
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--text-color, #1e293b);
+    margin: 0 0 32px 0;
+    letter-spacing: -0.025em;
+}
+
+.ho-feature-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+
+.ho-feature-item {
+    text-align: center;
+    padding: 32px 24px;
+    background: var(--card-bg, #ffffff);
+    border: 1px solid var(--border-color, #e2e8f0);
+    border-radius: 16px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ho-feature-item:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 25px -5px rgba(0, 15, 30, 0.1);
+    border-color: #4f46e5;
+}
+
+.ho-feature-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, #4f46e5, #7c3aed);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.ho-feature-icon svg {
+    width: 28px;
+    height: 28px;
+    color: white;
+    z-index: 1;
+}
+
+.ho-feature-item h3 {
+    font-size: 18px;
+    font-weight: 700;
+    color: var(--text-color, #1e293b);
+    margin: 0 0 12px 0;
+    letter-spacing: -0.025em;
+}
+
+.ho-feature-item p {
+    font-size: 14px;
+    color: var(--text-muted, #64748b);
+    margin: 0;
+    line-height: 1.5;
+    font-weight: 500;
+}
+
+/* ---------- Responsive Design ---------- */
+@media (max-width: 1024px) {
+    .ho-wrapper {
+        padding: 16px 16px 32px;
+    }
+    
+    .ho-welcome-card {
+        grid-template-columns: 1fr;
+        gap: 32px;
+        padding: 32px;
+    }
+    
+    .ho-welcome-content h1 {
+        font-size: 32px;
+    }
+    
+    .ho-welcome-stats {
+        gap: 24px;
+    }
+    
+    .ho-action-grid {
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .ho-welcome-card {
+        padding: 24px;
+    }
+    
+    .ho-welcome-content h1 {
+        font-size: 28px;
+    }
+    
+    .ho-welcome-content p {
+        font-size: 16px;
+    }
+    
+    .ho-welcome-stats {
+        flex-direction: column;
+        gap: 20px;
+    }
+    
+    .ho-icon-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .ho-quick-actions h2,
+    .ho-features h2 {
+        font-size: 24px;
+    }
+    
+    .ho-action-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .ho-feature-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    
+    .ho-action-card {
+        padding: 20px;
+    }
+    
+    .ho-feature-item {
+        padding: 24px 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    .ho-wrapper {
+        padding: 12px 12px 24px;
+    }
+    
+    .ho-welcome-card {
+        padding: 20px;
+        margin-bottom: 32px;
+    }
+    
+    .ho-welcome-content h1 {
+        font-size: 24px;
+    }
+    
+    .ho-stat-number {
+        font-size: 28px;
+    }
+    
+    .ho-action-icon {
+        width: 48px;
+        height: 48px;
+    }
+    
+    .ho-action-icon svg {
+        width: 20px;
+        height: 20px;
+    }
+    
+    .ho-feature-icon {
+        width: 56px;
+        height: 56px;
+    }
+    
+    .ho-feature-icon svg {
+        width: 24px;
+        height: 24px;
+    }
+}
