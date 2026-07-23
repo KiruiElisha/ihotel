@@ -64,16 +64,26 @@
       </div>
     </template>
     <template #actions>
-      <Button
-        class="w-full"
-        variant="solid"
-        theme="blue"
-        label="Save"
-        :loading="save.loading"
-        @click="submit"
-      />
+      <div class="flex gap-2">
+        <Button
+          v-if="idScanEnabled"
+          :icon-left="LucideScanLine"
+          label="Scan ID"
+          @click="showScan = true"
+        />
+        <Button
+          class="flex-1"
+          variant="solid"
+          theme="blue"
+          label="Save"
+          :loading="save.loading"
+          @click="submit"
+        />
+      </div>
     </template>
   </Dialog>
+
+  <IdScanDialog v-model="showScan" :guest="draft.name || null" @filled="onScanFilled" @applied="onScanApplied" />
 </template>
 
 <script setup>
@@ -88,9 +98,12 @@ import {
   toast,
 } from 'frappe-ui'
 import LucidePlus from '~icons/lucide/plus'
+import LucideScanLine from '~icons/lucide/scan-line'
 import PageHeader from '@/components/PageHeader.vue'
 import ResponsiveList from '@/components/ResponsiveList.vue'
+import IdScanDialog from '@/components/IdScanDialog.vue'
 import { lists } from '@/data/lists'
+import { cardSettings } from '@/data/cards'
 import { date } from '@/data/format'
 
 const guests = createResource({
@@ -163,5 +176,24 @@ const save = createResource({
 function submit() {
   const { name, creation, ...values } = draft
   save.submit({ doctype: 'Guest', name: name || null, values })
+}
+
+// --- ID scanning ---
+const showScan = ref(false)
+const idScanEnabled = computed(() => Boolean(cardSettings.data?.id_scan?.enabled))
+
+// New/unsaved guest: the scan fills the form fields for review before saving.
+function onScanFilled({ fields }) {
+  for (const [key, value] of Object.entries(fields || {})) {
+    if (value && key in draft) draft[key] = value
+  }
+  toast.success('Form filled from scan — review and save')
+}
+
+// Existing guest: the scan was already saved server-side (with images).
+function onScanApplied() {
+  showDialog.value = false
+  toast.success('Guest updated from scan')
+  guests.reload()
 }
 </script>

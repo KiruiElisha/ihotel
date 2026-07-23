@@ -1,0 +1,253 @@
+{
+ "actions": [],
+ "allow_rename": 0,
+ "autoname": "format:KEY-{#####}",
+ "creation": "2026-07-23 10:00:00.000000",
+ "doctype": "DocType",
+ "engine": "InnoDB",
+ "field_order": [
+  "guest",
+  "guest_name",
+  "column_break_kc1",
+  "room",
+  "section_break_links",
+  "reservation",
+  "column_break_kc2",
+  "checked_in",
+  "credential_section",
+  "card_uid",
+  "vendor",
+  "access_level",
+  "status",
+  "column_break_kc3",
+  "valid_from",
+  "valid_to",
+  "is_duplicate",
+  "audit_section",
+  "encoded_on",
+  "encoded_by",
+  "column_break_kc4",
+  "mobile_key_token",
+  "cancelled_on",
+  "diagnostics_section",
+  "error_message",
+  "raw_response"
+ ],
+ "fields": [
+  {
+   "fieldname": "guest",
+   "fieldtype": "Link",
+   "label": "Guest",
+   "options": "Guest",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "guest_name",
+   "fieldtype": "Data",
+   "label": "Guest Name",
+   "fetch_from": "guest.guest_name",
+   "read_only": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "column_break_kc1",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "room",
+   "fieldtype": "Link",
+   "label": "Room",
+   "options": "Room",
+   "reqd": 1,
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "section_break_links",
+   "fieldtype": "Section Break",
+   "label": "Stay"
+  },
+  {
+   "fieldname": "reservation",
+   "fieldtype": "Link",
+   "label": "Reservation",
+   "options": "Reservation"
+  },
+  {
+   "fieldname": "column_break_kc2",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "checked_in",
+   "fieldtype": "Link",
+   "label": "Checked In",
+   "options": "Checked In"
+  },
+  {
+   "fieldname": "credential_section",
+   "fieldtype": "Section Break",
+   "label": "Credential"
+  },
+  {
+   "fieldname": "card_uid",
+   "fieldtype": "Data",
+   "label": "Card UID",
+   "read_only": 1,
+   "unique": 1,
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "vendor",
+   "fieldtype": "Data",
+   "label": "Vendor",
+   "read_only": 1
+  },
+  {
+   "fieldname": "access_level",
+   "fieldtype": "Select",
+   "label": "Access Level",
+   "options": "Guest\nSuite\nMaster\nGrand Master\nEmergency",
+   "default": "Guest",
+   "in_list_view": 1
+  },
+  {
+   "fieldname": "status",
+   "fieldtype": "Select",
+   "label": "Status",
+   "options": "Encoded\nActive\nCancelled\nExpired\nFailed",
+   "default": "Encoded",
+   "in_list_view": 1,
+   "in_standard_filter": 1
+  },
+  {
+   "fieldname": "column_break_kc3",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "valid_from",
+   "fieldtype": "Datetime",
+   "label": "Valid From"
+  },
+  {
+   "fieldname": "valid_to",
+   "fieldtype": "Datetime",
+   "label": "Valid To"
+  },
+  {
+   "fieldname": "is_duplicate",
+   "fieldtype": "Check",
+   "label": "Duplicate Key",
+   "description": "A second key issued for the room without invalidating existing keys."
+  },
+  {
+   "fieldname": "audit_section",
+   "fieldtype": "Section Break",
+   "label": "Audit"
+  },
+  {
+   "fieldname": "encoded_on",
+   "fieldtype": "Datetime",
+   "label": "Encoded On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "encoded_by",
+   "fieldtype": "Link",
+   "label": "Encoded By",
+   "options": "User",
+   "read_only": 1
+  },
+  {
+   "fieldname": "column_break_kc4",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "mobile_key_token",
+   "fieldtype": "Small Text",
+   "label": "Mobile Key Token",
+   "read_only": 1
+  },
+  {
+   "fieldname": "cancelled_on",
+   "fieldtype": "Datetime",
+   "label": "Cancelled On",
+   "read_only": 1
+  },
+  {
+   "fieldname": "diagnostics_section",
+   "fieldtype": "Section Break",
+   "label": "Diagnostics",
+   "collapsible": 1
+  },
+  {
+   "fieldname": "error_message",
+   "fieldtype": "Small Text",
+   "label": "Error Message",
+   "read_only": 1
+  },
+  {
+   "fieldname": "raw_response",
+   "fieldtype": "Code",
+   "label": "Raw Response",
+   "options": "JSON",
+   "read_only": 1
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-07-23 10:00:00.000000",
+ "modified_by": "Administrator",
+ "module": "iHotel",
+ "name": "Key Card",
+ "naming_rule": "Expression",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "role": "System Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "General Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "Hotel Manager",
+   "read": 1,
+   "write": 1,
+   "create": 1,
+   "delete": 1,
+   "export": 1,
+   "print": 1,
+   "report": 1,
+   "share": 1
+  },
+  {
+   "role": "Front Desk",
+   "read": 1,
+   "write": 1,
+   "create": 1
+  }
+ ],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": [],
+ "track_changes": 1
+}

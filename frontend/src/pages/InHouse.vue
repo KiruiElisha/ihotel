@@ -78,26 +78,47 @@
       </p>
     </template>
     <template #actions>
-      <Button
-        class="w-full"
-        variant="solid"
-        theme="blue"
-        label="Check out"
-        :loading="checkOut.loading"
-        @click="checkOut.submit({ stay: selected.name })"
-      />
+      <div class="flex gap-2">
+        <Button
+          v-if="keyEncodingEnabled"
+          :icon-left="LucideKeyRound"
+          label="Room keys"
+          @click="showKeys = true"
+        />
+        <Button
+          class="flex-1"
+          variant="solid"
+          theme="blue"
+          label="Check out"
+          :loading="checkOut.loading"
+          @click="checkOut.submit({ stay: selected.name })"
+        />
+      </div>
     </template>
   </Dialog>
+
+  <KeyCardDialog
+    v-model="showKeys"
+    :room="selected.room"
+    :room-label="selected.room_number"
+    :guest="selected.guest"
+    :checked-in="selected.name"
+    :valid-from="selected.actual_check_in"
+    :valid-to="selected.expected_check_out"
+  />
 </template>
 
 <script setup>
 import { computed, ref } from 'vue'
 import { Badge, Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
 import LucideRefreshCw from '~icons/lucide/refresh-cw'
+import LucideKeyRound from '~icons/lucide/key-round'
 import PageHeader from '@/components/PageHeader.vue'
 import ResponsiveList from '@/components/ResponsiveList.vue'
 import StatTile from '@/components/StatTile.vue'
+import KeyCardDialog from '@/components/KeyCardDialog.vue'
 import { currency, date } from '@/data/format'
+import { cardSettings } from '@/data/cards'
 
 const inHouse = createResource({
   url: 'ihotel.frontend_api.get_in_house',
@@ -151,7 +172,9 @@ const columns = [
 ]
 
 const showStay = ref(false)
+const showKeys = ref(false)
 const selected = ref({})
+const keyEncodingEnabled = computed(() => Boolean(cardSettings.data?.key_encoding?.enabled))
 
 const detail = computed(() => {
   const s = selected.value

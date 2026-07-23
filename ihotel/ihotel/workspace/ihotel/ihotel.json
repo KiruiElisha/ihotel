@@ -1,13 +1,8 @@
 {
  "charts": [],
- "content": "[{\"id\":\"n7wlPv2uO9\",\"type\":\"custom_block\",\"data\":{\"custom_block_name\":\"iHotel\",\"col\":12}}]",
+ "content": "[{\"id\": \"hdrMain\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>iHotel \\u2014 Front Desk</b></span>\", \"col\": 12}}, {\"id\": \"pDesk\", \"type\": \"paragraph\", \"data\": {\"text\": \"Open the front-desk app or jump straight to daily operations.\", \"col\": 12}}, {\"id\": \"sc_FrontDeskApp\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Front Desk App\", \"col\": 3}}, {\"id\": \"sc_Reservations\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Reservations\", \"col\": 3}}, {\"id\": \"sc_In-House\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"In-House\", \"col\": 3}}, {\"id\": \"sc_Rooms\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Rooms\", \"col\": 3}}, {\"id\": \"sc_Guests\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Guests\", \"col\": 3}}, {\"id\": \"sc_Housekeeping\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Housekeeping\", \"col\": 3}}, {\"id\": \"sc_KeyCards\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Key Cards\", \"col\": 3}}, {\"id\": \"sc_NightAudit\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Night Audit\", \"col\": 3}}, {\"id\": \"hdrMasters\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Masters & Reports</b></span>\", \"col\": 12}}, {\"id\": \"cd_FrontOffice\", \"type\": \"card\", \"data\": {\"card_name\": \"Front Office\", \"col\": 4}}, {\"id\": \"cd_RoomsHousekeeping\", \"type\": \"card\", \"data\": {\"card_name\": \"Rooms & Housekeeping\", \"col\": 4}}, {\"id\": \"cd_GuestServices\", \"type\": \"card\", \"data\": {\"card_name\": \"Guest Services\", \"col\": 4}}, {\"id\": \"cd_RatesAccounting\", \"type\": \"card\", \"data\": {\"card_name\": \"Rates & Accounting\", \"col\": 4}}, {\"id\": \"cd_Configuration\", \"type\": \"card\", \"data\": {\"card_name\": \"Configuration\", \"col\": 4}}]",
  "creation": "2025-11-13 23:34:05.309440",
- "custom_blocks": [
-  {
-   "custom_block_name": "iHotel",
-   "label": "iHotel"
-  }
- ],
+ "custom_blocks": [],
  "docstatus": 0,
  "doctype": "Workspace",
  "for_user": "",
@@ -17,8 +12,258 @@
  "indicator_color": "",
  "is_hidden": 0,
  "label": "iHotel",
- "links": [],
- "modified": "2026-02-05 14:03:01.548272",
+ "links": [
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Front Office",
+   "link_count": 4,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Reservation",
+   "link_count": 0,
+   "link_to": "Reservation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Group Reservation",
+   "link_count": 0,
+   "link_to": "Group Reservation",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Checked In",
+   "link_count": 0,
+   "link_to": "Checked In",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Guest",
+   "link_count": 0,
+   "link_to": "Guest",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rooms & Housekeeping",
+   "link_count": 6,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Room",
+   "link_count": 0,
+   "link_to": "Room",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Room Type",
+   "link_count": 0,
+   "link_to": "Room Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Building",
+   "link_count": 0,
+   "link_to": "Buildings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Room Out of Order",
+   "link_count": 0,
+   "link_to": "Room Out of Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Housekeeping Task",
+   "link_count": 0,
+   "link_to": "Housekeeping Task",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Maintenance Request",
+   "link_count": 0,
+   "link_to": "Maintenance Request",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Guest Services",
+   "link_count": 3,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Key Card",
+   "link_count": 0,
+   "link_to": "Key Card",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Laundry Order",
+   "link_count": 0,
+   "link_to": "Laundry Order",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Hotel Service",
+   "link_count": 0,
+   "link_to": "Hotel Service",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rates & Accounting",
+   "link_count": 3,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rate Type",
+   "link_count": 0,
+   "link_to": "Rate Type",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Rate Schedule",
+   "link_count": 0,
+   "link_to": "Rate Schedule",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Night Audit",
+   "link_count": 0,
+   "link_to": "Night Audit",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Configuration",
+   "link_count": 3,
+   "onboard": 0,
+   "type": "Card Break"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "iHotel Settings",
+   "link_count": 0,
+   "link_to": "iHotel Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Laundry Settings",
+   "link_count": 0,
+   "link_to": "Laundry Settings",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  },
+  {
+   "dependencies": "",
+   "hidden": 0,
+   "is_query_report": 0,
+   "label": "Amenity",
+   "link_count": 0,
+   "link_to": "Amenity",
+   "link_type": "DocType",
+   "onboard": 0,
+   "type": "Link"
+  }
+ ],
+ "modified": "2026-07-23 10:00:00.000000",
  "modified_by": "Administrator",
  "module": "iHotel",
  "name": "iHotel",
@@ -29,6 +274,79 @@
  "quick_lists": [],
  "roles": [],
  "sequence_id": 6.0,
- "shortcuts": [],
+ "shortcuts": [
+  {
+   "color": "Blue",
+   "doc_view": "",
+   "format": "",
+   "label": "Front Desk App",
+   "stats_filter": "{}",
+   "type": "URL",
+   "url": "/hotel"
+  },
+  {
+   "color": "Blue",
+   "doc_view": "List",
+   "format": "",
+   "label": "Reservations",
+   "link_to": "Reservation",
+   "stats_filter": "{}",
+   "type": "DocType"
+  },
+  {
+   "color": "Green",
+   "doc_view": "List",
+   "format": "",
+   "label": "In-House",
+   "link_to": "Checked In",
+   "stats_filter": "{}",
+   "type": "DocType"
+  },
+  {
+   "color": "Orange",
+   "doc_view": "List",
+   "format": "",
+   "label": "Rooms",
+   "link_to": "Room",
+   "stats_filter": "{}",
+   "type": "DocType"
+  },
+  {
+   "color": "Purple",
+   "doc_view": "List",
+   "format": "",
+   "label": "Guests",
+   "link_to": "Guest",
+   "stats_filter": "{}",
+   "type": "DocType"
+  },
+  {
+   "color": "Cyan",
+   "doc_view": "List",
+   "format": "",
+   "label": "Housekeeping",
+   "link_to": "Housekeeping Task",
+   "stats_filter": "{}",
+   "type": "DocType"
+  },
+  {
+   "color": "Yellow",
+   "doc_view": "List",
+   "format": "",
+   "label": "Key Cards",
+   "link_to": "Key Card",
+   "stats_filter": "{}",
+   "type": "DocType"
+  },
+  {
+   "color": "Grey",
+   "doc_view": "List",
+   "format": "",
+   "label": "Night Audit",
+   "link_to": "Night Audit",
+   "stats_filter": "{}",
+   "type": "DocType"
+  }
+ ],
  "title": "iHotel"
 }

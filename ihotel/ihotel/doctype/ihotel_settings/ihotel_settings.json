@@ -124,7 +124,23 @@
   "column_break_tripadvisor",
   "tripadvisor_last_sync",
   "section_break_tripadvisor2",
-  "tripadvisor_ical_url"
+  "tripadvisor_ical_url",
+  "card_integration_tab",
+  "id_scan_section",
+  "id_scan_enabled",
+  "id_scan_provider",
+  "id_scan_store_images",
+  "column_break_idscan",
+  "cloud_ocr_endpoint",
+  "cloud_ocr_api_key",
+  "key_encoding_section",
+  "key_encoding_enabled",
+  "key_encoder_vendor",
+  "default_key_access_level",
+  "column_break_keyenc",
+  "key_encoder_endpoint",
+  "key_encoder_facility_id",
+  "key_encoder_api_key"
  ],
  "fields": [
   {
@@ -779,6 +795,103 @@
    "fieldname": "tripadvisor_ical_url",
    "fieldtype": "Small Text",
    "label": "iCal Feed URL"
+  },
+  {
+   "fieldname": "card_integration_tab",
+   "fieldtype": "Tab Break",
+   "label": "Card Integration"
+  },
+  {
+   "fieldname": "id_scan_section",
+   "fieldtype": "Section Break",
+   "label": "Guest ID / Passport Scanning"
+  },
+  {
+   "fieldname": "id_scan_enabled",
+   "fieldtype": "Check",
+   "label": "Enable ID Scanning",
+   "default": "1",
+   "description": "Show the Scan ID action on guest and check-in forms."
+  },
+  {
+   "fieldname": "id_scan_provider",
+   "fieldtype": "Select",
+   "label": "Capture Method",
+   "options": "Browser Camera\nCloud OCR",
+   "default": "Browser Camera",
+   "description": "Browser Camera decodes the passport MRZ / driver-license barcode on the device. Cloud OCR sends the image to an external service."
+  },
+  {
+   "fieldname": "id_scan_store_images",
+   "fieldtype": "Check",
+   "label": "Store Scanned Images on Guest",
+   "default": "1",
+   "description": "Attach the captured document image(s) to the Guest record."
+  },
+  {
+   "fieldname": "column_break_idscan",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "cloud_ocr_endpoint",
+   "fieldtype": "Data",
+   "label": "Cloud OCR Endpoint",
+   "depends_on": "eval:doc.id_scan_provider=='Cloud OCR'"
+  },
+  {
+   "fieldname": "cloud_ocr_api_key",
+   "fieldtype": "Password",
+   "label": "Cloud OCR API Key",
+   "depends_on": "eval:doc.id_scan_provider=='Cloud OCR'"
+  },
+  {
+   "fieldname": "key_encoding_section",
+   "fieldtype": "Section Break",
+   "label": "Room Key Encoding"
+  },
+  {
+   "fieldname": "key_encoding_enabled",
+   "fieldtype": "Check",
+   "label": "Enable Key Encoding",
+   "default": "1",
+   "description": "Show the Encode Key action on the check-in / in-house flow."
+  },
+  {
+   "fieldname": "key_encoder_vendor",
+   "fieldtype": "Select",
+   "label": "Lock System",
+   "options": "Mock\nSalto\nAssa Abloy\nOnity",
+   "default": "Mock",
+   "description": "Mock issues simulated keys (no hardware) so the flow works out of the box. Select your lock vendor once its adapter is configured and verified."
+  },
+  {
+   "fieldname": "default_key_access_level",
+   "fieldtype": "Select",
+   "label": "Default Access Level",
+   "options": "Guest\nSuite\nMaster\nGrand Master\nEmergency",
+   "default": "Guest"
+  },
+  {
+   "fieldname": "column_break_keyenc",
+   "fieldtype": "Column Break"
+  },
+  {
+   "fieldname": "key_encoder_endpoint",
+   "fieldtype": "Data",
+   "label": "Encoder / API Endpoint",
+   "depends_on": "eval:doc.key_encoder_vendor!='Mock'"
+  },
+  {
+   "fieldname": "key_encoder_facility_id",
+   "fieldtype": "Data",
+   "label": "Facility ID",
+   "depends_on": "eval:['Assa Abloy'].includes(doc.key_encoder_vendor)"
+  },
+  {
+   "fieldname": "key_encoder_api_key",
+   "fieldtype": "Password",
+   "label": "Encoder API Key / Token",
+   "depends_on": "eval:doc.key_encoder_vendor!='Mock'"
   }
  ],
  "grid_page_length": 50,

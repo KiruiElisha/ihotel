@@ -11,6 +11,8 @@ declare module 'vue' {
     AppShell: typeof import('./src/components/AppShell.vue')['default']
     BottomNav: typeof import('./src/components/BottomNav.vue')['default']
     ConfirmDialog: typeof import('./src/components/ConfirmDialog.vue')['default']
+    IdScanDialog: typeof import('./src/components/IdScanDialog.vue')['default']
+    KeyCardDialog: typeof import('./src/components/KeyCardDialog.vue')['default']
     PageHeader: typeof import('./src/components/PageHeader.vue')['default']
     ResponsiveList: typeof import('./src/components/ResponsiveList.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']

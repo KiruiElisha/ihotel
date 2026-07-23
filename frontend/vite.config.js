@@ -28,12 +28,19 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        // Keep the framework and the UI kit in their own chunks: they change far
-        // less often than the pages, so browsers keep them cached across deploys.
+        // Keep the framework and the UI kit together in ONE vendor chunk.
+        //
+        // frappe-ui imports vue and vue-router, so splitting them into separate
+        // chunks makes those chunks reference each other's live bindings and
+        // Rollup emits a circular-chunk temporal-dead-zone crash at load time
+        // ("can't access lexical declaration '…' before initialization").
+        // A single vendor chunk still changes far less often than the pages, so
+        // browsers keep it cached across deploys — without the cycle.
         manualChunks(id) {
           if (!id.includes('node_modules')) return
-          if (id.includes('frappe-ui')) return 'frappe-ui'
-          if (/[\\/](vue|vue-router|@vue)[\\/]/.test(id)) return 'vue'
+          if (/[\\/](vue|vue-router|@vue|@vueuse|frappe-ui)[\\/]/.test(id)) {
+            return 'vendor'
+          }
         },
       },
     },
