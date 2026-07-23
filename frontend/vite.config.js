@@ -1,27 +1,41 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
+import frappeui from 'frappe-ui/vite'
 import path from 'path'
-import { getProxyOptions } from 'frappe-ui/src/utils/vite-dev-server'
-import { webserver_port } from '../../../sites/common_site_config.json'
 
-// https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [vue()],
-  server: {
-    port: 8080,
-    proxy: getProxyOptions({ port: webserver_port }),
-  },
+  plugins: [
+    frappeui({
+      frontendRoute: '/hotel',
+      frappeProxy: true,
+      lucideIcons: true,
+      jinjaBootData: true,
+      buildConfig: {
+        outDir: '../ihotel/public/hotel',
+        baseUrl: '/assets/ihotel/hotel/',
+        indexHtmlPath: '../ihotel/www/hotel.html',
+        emptyOutDir: true,
+        sourcemap: false,
+      },
+    }),
+    vue(),
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
     },
   },
   build: {
-    outDir: `../${path.basename(path.resolve('..'))}/public/frontend`,
-    emptyOutDir: true,
-    target: 'es2015',
-  },
-  optimizeDeps: {
-    include: ['frappe-ui > feather-icons', 'showdown', 'engine.io-client'],
+    rollupOptions: {
+      output: {
+        // Keep the framework and the UI kit in their own chunks: they change far
+        // less often than the pages, so browsers keep them cached across deploys.
+        manualChunks(id) {
+          if (!id.includes('node_modules')) return
+          if (id.includes('frappe-ui')) return 'frappe-ui'
+          if (/[\\/](vue|vue-router|@vue)[\\/]/.test(id)) return 'vue'
+        },
+      },
+    },
   },
 })

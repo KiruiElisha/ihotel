@@ -40,6 +40,11 @@ fixtures = [
 # ------------------
 
 # include js, css files in header of desk.html
+website_route_rules = [
+	# The front-desk single-page app.
+	{"from_route": "/hotel/<path:app_path>", "to_route": "hotel"},
+]
+
 app_include_css = "/assets/ihotel/css/ihotel.css"
 app_include_js = "/assets/ihotel/js/ihotel_notifications.js"
 

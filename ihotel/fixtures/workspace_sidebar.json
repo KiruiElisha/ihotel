@@ -927,6 +927,7 @@
   ],
   "modified": "2026-04-13 11:07:32.146331",
   "module": "iHotel",
+  "module_onboarding": null,
   "name": "iHotel",
   "standard": 0,
   "title": "iHotel"

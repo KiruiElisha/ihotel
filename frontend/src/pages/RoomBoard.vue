@@ -1,585 +1,180 @@
 <template>
-  <div class="frappe-app-page">
-    <div class="frappe-container">
-      <!-- Page Header -->
-      <div class="page-header">
-        <div class="page-title">Room Board</div>
-        <div class="page-actions">
-          <Button 
-            icon="refresh" 
-            @click="refreshRooms"
-            :loading="$resources.room_data.loading"
-          >
-            Refresh
-          </Button>
-        </div>
-      </div>
+  <PageHeader title="Room Board">
+    <template #actions>
+      <Button
+        label="Refresh"
+        :loading="board.loading"
+        :icon-left="LucideRefreshCw"
+        @click="board.reload()"
+      />
+    </template>
+  </PageHeader>
 
-      <!-- Filters -->
-      <div class="card">
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-3">
-              <label class="control-label">Search</label>
-              <div class="input-group">
-                <input 
-                  v-model="searchQuery" 
-                  type="text" 
-                  placeholder="Search room number or guest..."
-                  class="form-control"
-                >
-                <div class="input-group-addon">
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
-                  </svg>
-                </div>
-              </div>
-            </div>
-            
-            <div class="col-md-2">
-              <label class="control-label">Room Type</label>
-              <select v-model="selectedRoomType" class="form-control">
-                <option value="">All Room Types</option>
-                <option v-for="type in roomTypes" :key="type" :value="type">{{ type }}</option>
-              </select>
-            </div>
-            
-            <div class="col-md-2">
-              <label class="control-label">Floor</label>
-              <select v-model="selectedFloor" class="form-control">
-                <option value="">All Floors</option>
-                <option v-for="floor in floors" :key="floor" :value="floor">Floor {{ floor }}</option>
-              </select>
-            </div>
-            
-            <div class="col-md-2">
-              <label class="control-label">Status</label>
-              <select v-model="selectedStatus" class="form-control">
-                <option value="">All Statuses</option>
-                <option v-for="status in statusOptions" :key="status.value" :value="status.value">{{ status.label }}</option>
-              </select>
-            </div>
-            
-            <div class="col-md-3">
-              <label class="control-label">&nbsp;</label>
-              <div>
-                <Button @click="clearFilters" icon="x">Clear Filters</Button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Status Pills -->
-          <div class="status-pills">
-            <button 
-              v-for="status in statusOptions" 
-              :key="status.value"
-              @click="selectedStatus = selectedStatus === status.value ? '' : status.value"
-              :class="[
-                'status-pill',
-                selectedStatus === status.value ? 'active' : ''
-              ]"
-            >
-              <span class="status-dot" :style="{ backgroundColor: status.color }"></span>
-              {{ status.label }}
-              <span class="status-count">{{ getStatusCount(status.value) }}</span>
-            </button>
-          </div>
-        </div>
-      </div>
-
-      <!-- Room Grid -->
-      <div class="room-grid">
-        <div v-if="$resources.room_data.loading" class="text-center py-8">
-          <LoadingText />
-        </div>
-        <div v-else-if="filteredRooms.length === 0" class="text-muted text-center py-8">
-          No rooms match the current filters
-        </div>
-        <div v-else class="room-cards">
-          <div 
-            v-for="room in filteredRooms" 
-            :key="room.name"
-            @click="selectRoom(room)"
-            :class="[
-              'room-card',
-              `status-${room.status.toLowerCase().replace(' ', '-')}`
-            ]"
-          >
-            <div class="room-header">
-              <div class="room-number">{{ room.room_number }}</div>
-              <div class="room-status" :style="{ backgroundColor: getStatusColor(room.status) }"></div>
-            </div>
-            
-            <div class="room-type">{{ room.room_type }}</div>
-            <div class="room-floor">Floor {{ room.floor }}</div>
-            
-            <div class="room-status-label" :style="{ color: getStatusColor(room.status) }">
-              {{ room.status }}
-            </div>
-            
-            <div v-if="room.guest" class="room-guest">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-              </svg>
-              {{ room.guest }}
-            </div>
-            
-            <div v-if="room.check_out" class="room-checkout">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
-              </svg>
-              Out: {{ formatDate(room.check_out) }}
-            </div>
-            
-            <div v-if="room.status === 'Available'" class="room-actions">
-              <Button 
-                @click.stop="quickCheckIn(room)"
-                class="btn-success btn-sm"
-                icon="log-in"
-              >
-                Check In
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Room Details Modal -->
-      <Dialog v-model="showRoomDetails" :title="`Room ${selectedRoom?.room_number}`">
-        <div v-if="selectedRoom" class="room-details">
-          <div class="detail-row">
-            <span class="detail-label">Type:</span>
-            <span class="detail-value">{{ selectedRoom.room_type }}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Floor:</span>
-            <span class="detail-value">{{ selectedRoom.floor }}</span>
-          </div>
-          <div class="detail-row">
-            <span class="detail-label">Status:</span>
-            <span class="detail-value status-badge" :style="{ backgroundColor: getStatusColor(selectedRoom.status) + '20', color: getStatusColor(selectedRoom.status) }">
-              {{ selectedRoom.status }}
-            </span>
-          </div>
-          <div v-if="selectedRoom.guest" class="detail-row">
-            <span class="detail-label">Guest:</span>
-            <span class="detail-value">{{ selectedRoom.guest }}</span>
-          </div>
-          <div v-if="selectedRoom.check_out" class="detail-row">
-            <span class="detail-label">Check Out:</span>
-            <span class="detail-value">{{ formatDate(selectedRoom.check_out) }}</span>
-          </div>
-        </div>
-        
-        <template #actions>
-          <Button 
-            v-if="selectedRoom?.status === 'Available'"
-            @click="quickCheckIn(selectedRoom)"
-            class="btn-success"
-            icon="log-in"
-          >
-            Check In Guest
-          </Button>
-          <Button 
-            v-if="selectedRoom?.status === 'Occupied'"
-            @click="checkOut(selectedRoom)"
-            class="btn-danger"
-            icon="log-out"
-          >
-            Check Out
-          </Button>
-          <Button class="btn-default" icon="info">View Details</Button>
-        </template>
-      </Dialog>
-    </div>
+  <div class="flex flex-wrap items-center gap-2 border-b border-outline-gray-1 px-4 py-2.5 sm:px-5">
+    <FormControl type="select" size="sm" v-model="filters.status" :options="statusChoices" />
+    <FormControl type="select" size="sm" v-model="filters.floor" :options="floorChoices" />
+    <FormControl type="text" size="sm" placeholder="Room or guest" v-model="search" />
+    <span class="ml-auto text-sm text-ink-gray-5">{{ rooms.length }} rooms</span>
   </div>
+
+  <div class="flex-1 overflow-y-auto p-4 sm:p-5">
+    <ErrorMessage class="mb-4" :message="board.error" />
+
+    <!-- A board, not a table: at a glance you want colour and room number. -->
+    <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-6">
+      <button
+        v-for="room in rooms"
+        :key="room.name"
+        type="button"
+        class="rounded-lg border p-3 text-left transition-colors hover:border-outline-gray-3"
+        :class="tone(room.status)"
+        @click="open(room)"
+      >
+        <div class="flex items-start justify-between gap-2">
+          <span class="text-lg font-semibold tabular-nums">{{ room.room_number }}</span>
+          <Badge :theme="badgeTheme(room.status)">{{ room.status || '—' }}</Badge>
+        </div>
+        <p class="mt-1 truncate text-xs opacity-80">{{ room.room_type || 'No type' }}</p>
+        <p class="mt-2 truncate text-sm font-medium">
+          {{ room.guest || 'Vacant' }}
+        </p>
+        <p v-if="room.due_out" class="mt-0.5 text-xs opacity-80">
+          Due out {{ date(room.due_out) }}
+        </p>
+      </button>
+    </div>
+
+    <p v-if="!rooms.length" class="rounded-lg border border-outline-gray-1 p-8 text-center text-ink-gray-6">
+      No rooms match these filters.
+    </p>
+  </div>
+
+  <Dialog v-model="showRoom" :options="{ title: selected.room_number ? `Room ${selected.room_number}` : 'Room' }">
+    <template #body-content>
+      <dl class="space-y-3 text-sm">
+        <div class="flex justify-between gap-4">
+          <dt class="text-ink-gray-5">Type</dt>
+          <dd class="font-medium text-ink-gray-9">{{ selected.room_type || '—' }}</dd>
+        </div>
+        <div class="flex justify-between gap-4">
+          <dt class="text-ink-gray-5">Floor</dt>
+          <dd class="font-medium text-ink-gray-9">{{ selected.floor || '—' }}</dd>
+        </div>
+        <div class="flex justify-between gap-4">
+          <dt class="text-ink-gray-5">Guest</dt>
+          <dd class="font-medium text-ink-gray-9">{{ selected.guest || 'Vacant' }}</dd>
+        </div>
+        <div v-if="selected.checked_in_on" class="flex justify-between gap-4">
+          <dt class="text-ink-gray-5">Checked in</dt>
+          <dd class="font-medium text-ink-gray-9">{{ date(selected.checked_in_on) }}</dd>
+        </div>
+      </dl>
+
+      <FormControl
+        class="mt-5"
+        type="select"
+        label="Room status"
+        v-model="nextStatus"
+        :options="statusOptions"
+      />
+      <ErrorMessage class="mt-3" :message="updateStatus.error" />
+    </template>
+    <template #actions>
+      <Button
+        class="w-full"
+        variant="solid"
+        theme="blue"
+        label="Update status"
+        :loading="updateStatus.loading"
+        :disabled="!nextStatus || nextStatus === selected.status"
+        @click="updateStatus.submit({ room: selected.name, status: nextStatus })"
+      />
+    </template>
+  </Dialog>
 </template>
 
-<script>
-import { Button, Dialog, LoadingText } from 'frappe-ui'
+<script setup>
+import { computed, reactive, ref } from 'vue'
+import { Badge, Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
+import LucideRefreshCw from '~icons/lucide/refresh-cw'
+import PageHeader from '@/components/PageHeader.vue'
+import { date } from '@/data/format'
 
-export default {
-  name: 'RoomBoard',
-  components: {
-    Button,
-    Dialog,
-    LoadingText
-  },
-  data() {
-    return {
-      searchQuery: '',
-      selectedRoomType: '',
-      selectedFloor: '',
-      selectedStatus: '',
-      selectedRoom: null,
-      showRoomDetails: false,
-      statusOptions: [
-        { value: 'Available', label: 'Available', color: '#10b981' },
-        { value: 'Occupied', label: 'Occupied', color: '#3b82f6' },
-        { value: 'Vacant Dirty', label: 'Vacant Dirty', color: '#fb923c' },
-        { value: 'Vacant Clean', label: 'Vacant Clean', color: '#34d399' },
-        { value: 'Out of Order', label: 'Out of Order', color: '#ef4444' },
-      ]
-    }
-  },
-  resources: {
-    room_data: {
-      url: 'ihotel.api.get_room_board_data',
-      auto: true
-    }
-  },
-  computed: {
-    rooms() {
-      return this.$resources.room_data.data || []
-    },
-    filteredRooms() {
-      return this.rooms.filter(room => {
-        const matchesSearch = !this.searchQuery || 
-          room.room_number.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-          (room.guest && room.guest.toLowerCase().includes(this.searchQuery.toLowerCase()))
-        
-        const matchesType = !this.selectedRoomType || room.room_type === this.selectedRoomType
-        const matchesFloor = !this.selectedFloor || room.floor.toString() === this.selectedFloor
-        const matchesStatus = !this.selectedStatus || room.status === this.selectedStatus
-        
-        return matchesSearch && matchesType && matchesFloor && matchesStatus
-      })
-    },
-    roomTypes() {
-      const types = [...new Set(this.rooms.map(room => room.room_type))]
-      return types.filter(Boolean).sort()
-    },
-    floors() {
-      const floors = [...new Set(this.rooms.map(room => room.floor))]
-      return floors.filter(Boolean).sort((a, b) => a - b)
-    }
-  },
-  methods: {
-    getStatusColor(status) {
-      const statusMap = {
-        'Available': '#10b981',
-        'Occupied': '#3b82f6',
-        'Vacant Dirty': '#fb923c',
-        'Vacant Clean': '#34d399',
-        'Out of Order': '#ef4444',
-      }
-      return statusMap[status] || '#6b7280'
-    },
-    
-    getStatusCount(status) {
-      return this.rooms.filter(room => room.status === status).length
-    },
-    
-    formatDate(dateString) {
-      if (!dateString) return ''
-      const date = new Date(dateString)
-      return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
-    },
-    
-    selectRoom(room) {
-      this.selectedRoom = room
-      this.showRoomDetails = true
-    },
-    
-    clearFilters() {
-      this.searchQuery = ''
-      this.selectedRoomType = ''
-      this.selectedFloor = ''
-      this.selectedStatus = ''
-    },
-    
-    quickCheckIn(room) {
-      this.showRoomDetails = false
-      // Check-in functionality
-      alert(`Check-in for room ${room.room_number}`)
-    },
-    
-    checkOut(room) {
-      this.showRoomDetails = false
-      // Process check-out
-      this.$resources.check_out_room.submit({
-        room: room.name
-      }).then(() => {
-        this.$resources.room_data.fetch()
-      })
-    },
-    
-    refreshRooms() {
-      this.$resources.room_data.fetch()
-    }
-  }
+const board = createResource({
+  url: 'ihotel.frontend_api.get_room_board',
+  auto: true,
+})
+
+const filters = reactive({ status: '', floor: '' })
+const search = ref('')
+
+const statusChoices = computed(() => [
+  { label: 'All statuses', value: '' },
+  ...(board.data?.statuses || []).map((s) => ({ label: s, value: s })),
+])
+const floorChoices = computed(() => [
+  { label: 'All floors', value: '' },
+  ...(board.data?.floors || []).map((f) => ({ label: `Floor ${f}`, value: f })),
+])
+const statusOptions = computed(() =>
+  (board.data?.statuses || []).map((s) => ({ label: s, value: s })),
+)
+
+const rooms = computed(() => {
+  const q = search.value.trim().toLowerCase()
+  return (board.data?.rooms || []).filter((room) => {
+    if (filters.status && room.status !== filters.status) return false
+    if (filters.floor && String(room.floor) !== String(filters.floor)) return false
+    if (!q) return true
+    return (
+      String(room.room_number || '').toLowerCase().includes(q) ||
+      String(room.guest || '').toLowerCase().includes(q)
+    )
+  })
+})
+
+// Colour carries the status at a glance; the badge repeats it in words so the
+// board is not colour-only.
+// Room.status has twelve values; group them so the board reads at a glance.
+const clean = ['Available', 'Vacant Clean', 'Inspected']
+const dirty = ['Dirty', 'Vacant Dirty', 'Occupied Dirty', 'Pickup', 'Housekeeping']
+const outOfUse = ['Out of Order', 'Out of Service']
+
+const group = (status) => {
+  if (clean.includes(status)) return 'clean'
+  if (dirty.includes(status)) return 'dirty'
+  if (outOfUse.includes(status)) return 'out'
+  if (status) return 'occupied'
+  return 'unknown'
 }
+
+const tone = (status) =>
+  ({
+    clean: 'border-green-200 bg-green-50 text-green-900',
+    occupied: 'border-navy-200 bg-navy-50 text-navy-900',
+    dirty: 'border-brass-200 bg-brass-50 text-brass-600',
+    out: 'border-red-200 bg-red-50 text-red-900',
+  })[group(status)] || 'border-outline-gray-2 bg-surface-white text-ink-gray-8'
+
+const badgeTheme = (status) =>
+  ({ clean: 'green', occupied: 'blue', dirty: 'orange', out: 'red' })[group(status)] || 'gray'
+
+const showRoom = ref(false)
+const selected = ref({})
+const nextStatus = ref('')
+
+function open(room) {
+  selected.value = room
+  nextStatus.value = room.status || ''
+  showRoom.value = true
+}
+
+const updateStatus = createResource({
+  url: 'ihotel.frontend_api.set_room_status',
+  onSuccess: () => {
+    showRoom.value = false
+    toast.success('Room status updated')
+    board.reload()
+  },
+})
 </script>
-
-<style scoped>
-.frappe-app-page {
-  padding: 1.5rem;
-  background: var(--bg-color);
-  min-height: 100vh;
-}
-
-.page-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.page-title {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 0.375rem;
-  margin-bottom: 1.5rem;
-}
-
-.card-body {
-  padding: 1.5rem;
-}
-
-.control-label {
-  display: block;
-  font-weight: 500;
-  color: var(--text-color);
-  margin-bottom: 0.5rem;
-}
-
-.form-control {
-  width: 100%;
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 0.25rem;
-  background: var(--control-bg);
-  color: var(--text-color);
-}
-
-.input-group {
-  display: flex;
-}
-
-.input-group-addon {
-  padding: 0.5rem 0.75rem;
-  border: 1px solid var(--border-color);
-  border-left: none;
-  background: var(--gray-100);
-  color: var(--text-muted);
-}
-
-.status-pills {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-top: 1rem;
-}
-
-.status-pill {
-  display: flex;
-  align-items: center;
-  padding: 0.25rem 0.75rem;
-  border: 1px solid var(--border-color);
-  border-radius: 1rem;
-  background: var(--card-bg);
-  color: var(--text-color);
-  cursor: pointer;
-  transition: all 0.2s;
-}
-
-.status-pill:hover {
-  background: var(--gray-100);
-}
-
-.status-pill.active {
-  background: var(--primary);
-  color: white;
-  border-color: var(--primary);
-}
-
-.status-dot {
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  margin-right: 0.5rem;
-}
-
-.status-count {
-  margin-left: 0.5rem;
-  background: rgba(255, 255, 255, 0.2);
-  padding: 0.125rem 0.375rem;
-  border-radius: 1rem;
-  font-size: 0.75rem;
-}
-
-.room-grid {
-  min-height: 400px;
-}
-
-.room-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: 1rem;
-}
-
-.room-card {
-  background: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: 0.375rem;
-  padding: 1rem;
-  cursor: pointer;
-  transition: all 0.2s;
-  border-left: 4px solid transparent;
-}
-
-.room-card:hover {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transform: translateY(-2px);
-}
-
-.room-card.status-available {
-  border-left-color: var(--green);
-}
-
-.room-card.status-occupied {
-  border-left-color: var(--blue);
-}
-
-.room-card.status-vacant-dirty {
-  border-left-color: var(--orange);
-}
-
-.room-card.status-vacant-clean {
-  border-left-color: var(--green);
-}
-
-.room-card.status-out-of-order {
-  border-left-color: var(--red);
-}
-
-.room-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.room-number {
-  font-weight: 600;
-  color: var(--text-color);
-}
-
-.room-status {
-  width: 0.75rem;
-  height: 0.75rem;
-  border-radius: 50%;
-}
-
-.room-type {
-  font-size: 0.875rem;
-  color: var(--text-muted);
-  margin-bottom: 0.25rem;
-}
-
-.room-floor {
-  font-size: 0.75rem;
-  color: var(--text-muted);
-  margin-bottom: 0.75rem;
-}
-
-.room-status-label {
-  font-size: 0.75rem;
-  font-weight: 500;
-  margin-bottom: 0.5rem;
-}
-
-.room-guest,
-.room-checkout {
-  display: flex;
-  align-items: center;
-  font-size: 0.875rem;
-  color: var(--text-color);
-  margin-bottom: 0.25rem;
-}
-
-.room-guest svg,
-.room-checkout svg {
-  margin-right: 0.25rem;
-  color: var(--text-muted);
-}
-
-.room-actions {
-  margin-top: 0.75rem;
-}
-
-.btn-sm {
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-}
-
-.btn-success {
-  background: var(--green);
-  color: white;
-  border: 1px solid var(--green);
-}
-
-.btn-danger {
-  background: var(--red);
-  color: white;
-  border: 1px solid var(--red);
-}
-
-.btn-default {
-  background: var(--card-bg);
-  color: var(--text-color);
-  border: 1px solid var(--border-color);
-}
-
-.room-details {
-  padding: 1rem 0;
-}
-
-.detail-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.detail-row:last-child {
-  border-bottom: none;
-}
-
-.detail-label {
-  font-weight: 500;
-  color: var(--text-muted);
-}
-
-.detail-value {
-  color: var(--text-color);
-}
-
-.status-badge {
-  padding: 0.125rem 0.5rem;
-  border-radius: 1rem;
-  font-size: 0.75rem;
-  font-weight: 500;
-}
-
-.text-center {
-  text-align: center;
-}
-
-.text-muted {
-  color: var(--text-muted);
-}
-
-.py-8 {
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-}
-</style>

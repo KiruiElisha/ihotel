@@ -1,19 +1,16 @@
+import { createApp } from 'vue'
+import { FrappeUI, frappeRequest, setConfig } from 'frappe-ui'
+
+import App from './App.vue'
+import router from './router'
 import './index.css'
 
-import { createApp } from 'vue'
-import router from './router'
-import App from './App.vue'
-
-import { Button, Dialog, LoadingText, setConfig, frappeRequest, resourcesPlugin } from 'frappe-ui'
-
-let app = createApp(App)
-
+// Without this, createResource posts to a relative URL instead of /api/method.
 setConfig('resourceFetcher', frappeRequest)
 
+const app = createApp(App)
+// No realtime features here, and the socket lives on a different port than the
+// web server, so connecting only produces CORS noise in the console.
+app.use(FrappeUI, { socketio: false })
 app.use(router)
-app.use(resourcesPlugin)
-
-app.component('Button', Button)
-app.component('Dialog', Dialog)
-app.component('LoadingText', LoadingText)
 app.mount('#app')
