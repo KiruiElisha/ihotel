@@ -112,7 +112,7 @@
                   <p class="truncate font-medium text-ink-gray-9">{{ row.guest_name }}</p>
                   <p class="mt-0.5 text-sm text-ink-gray-5">{{ row.room_type || '—' }}</p>
                 </div>
-                <Badge :theme="statusTheme(row.status)">{{ statusLabel(row.status) }}</Badge>
+                <StatusBadge :value="row.status" />
               </div>
             </template>
           </ResponsiveList>
@@ -137,7 +137,7 @@
                   <p class="truncate font-medium text-ink-gray-9">{{ row.guest_name }}</p>
                   <p class="mt-0.5 text-sm text-ink-gray-5">{{ row.room_type || '—' }}</p>
                 </div>
-                <Badge :theme="statusTheme(row.status)">{{ statusLabel(row.status) }}</Badge>
+                <StatusBadge :value="row.status" />
               </div>
             </template>
           </ResponsiveList>
@@ -187,6 +187,7 @@ import LucideCalendarPlus from '~icons/lucide/calendar-plus'
 import PageHeader from '@/components/PageHeader.vue'
 import StatTile from '@/components/StatTile.vue'
 import ResponsiveList from '@/components/ResponsiveList.vue'
+import StatusBadge from '@/components/StatusBadge.vue'
 import { currency, date, percent, timeAgo } from '@/data/format'
 
 const today = createResource({
@@ -201,20 +202,9 @@ const movementColumns = [
   { label: 'Room type', key: 'room_type' },
   { label: 'Arrives', key: 'check_in_date', getLabel: ({ row }) => date(row.check_in_date) },
   { label: 'Departs', key: 'check_out_date', getLabel: ({ row }) => date(row.check_out_date) },
-  { label: 'Status', key: 'status', getLabel: ({ row }) => statusLabel(row.status) },
+  { label: 'Status', key: 'status', type: 'badge' },
 ]
 
-const STATUS_LABELS = {
-  pending: 'Pending',
-  confirmed: 'Confirmed',
-  checked_in: 'Checked in',
-  cancelled: 'Cancelled',
-}
-const statusLabel = (status) => STATUS_LABELS[status] || status || 'Pending'
-
-const statusTheme = (status) =>
-  ({ confirmed: 'green', checked_in: 'green', pending: 'orange', cancelled: 'red' })[status] ||
-  'gray'
 
 const activityIcon = (type) =>
   ({ check_in: LucideLogIn, check_out: LucideLogOut, reservation: LucideCalendarPlus })[type] ||

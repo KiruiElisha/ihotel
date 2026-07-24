@@ -26,7 +26,7 @@
             <p class="truncate font-medium text-ink-gray-9">{{ row.guest_name }}</p>
             <p class="mt-0.5 text-sm text-ink-gray-5">{{ row.room_type || 'No room type' }}</p>
           </div>
-          <Badge :theme="statusTheme(row.status)">{{ statusLabel(row.status) }}</Badge>
+          <StatusBadge :value="row.status" />
         </div>
         <dl class="mt-3 grid grid-cols-3 gap-2 border-t border-outline-gray-1 pt-3 text-sm">
           <div>
@@ -104,11 +104,13 @@
 
 <script setup>
 import { computed, reactive, ref } from 'vue'
-import { Badge, Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
+import { Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
 import LucidePlus from '~icons/lucide/plus'
 import PageHeader from '@/components/PageHeader.vue'
 import ResponsiveList from '@/components/ResponsiveList.vue'
+import StatusBadge from '@/components/StatusBadge.vue'
 import { lists } from '@/data/lists'
+import { statusLabel } from '@/data/status'
 import { currency, date, daysFromToday, nights, today } from '@/data/format'
 
 const reservations = createResource({
@@ -166,17 +168,6 @@ const columns = [
 
 // Reservation.status is stored lowercase (pending / confirmed / checked_in /
 // cancelled); present it in words without changing what is saved.
-const STATUS_LABELS = {
-  pending: 'Pending',
-  confirmed: 'Confirmed',
-  checked_in: 'Checked in',
-  cancelled: 'Cancelled',
-}
-const statusLabel = (status) => STATUS_LABELS[status] || status || 'Pending'
-
-const statusTheme = (status) =>
-  ({ confirmed: 'green', checked_in: 'green', pending: 'orange', cancelled: 'red' })[status] ||
-  'gray'
 
 const showDialog = ref(false)
 const draft = reactive({})

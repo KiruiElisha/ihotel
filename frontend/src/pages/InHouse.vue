@@ -44,7 +44,7 @@
               Room {{ row.room_number }} &middot; {{ row.room_type || '—' }}
             </p>
           </div>
-          <Badge :theme="dueTheme(row)">{{ dueLabel(row) }}</Badge>
+          <StatusBadge :value="dueLabel(row)" />
         </div>
         <dl class="mt-3 grid grid-cols-3 gap-2 border-t border-outline-gray-1 pt-3 text-sm">
           <div>
@@ -110,11 +110,12 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { Badge, Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
+import { Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
 import LucideRefreshCw from '~icons/lucide/refresh-cw'
 import LucideKeyRound from '~icons/lucide/key-round'
 import PageHeader from '@/components/PageHeader.vue'
 import ResponsiveList from '@/components/ResponsiveList.vue'
+import StatusBadge from '@/components/StatusBadge.vue'
 import StatTile from '@/components/StatTile.vue'
 import KeyCardDialog from '@/components/KeyCardDialog.vue'
 import { currency, date } from '@/data/format'
@@ -149,7 +150,6 @@ const rows = computed(() => {
 })
 
 const dueLabel = (row) => (row.overdue ? 'Overdue' : row.due_out_today ? 'Due out' : 'Staying')
-const dueTheme = (row) => (row.overdue ? 'red' : row.due_out_today ? 'orange' : 'green')
 
 const columns = [
   { label: 'Guest', key: 'guest_name', width: 2 },

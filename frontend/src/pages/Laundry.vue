@@ -42,7 +42,7 @@
               {{ row.service_type || 'Laundry' }}
             </p>
           </div>
-          <Badge :theme="statusTheme(row.status)">{{ row.status }}</Badge>
+          <StatusBadge :value="row.status" />
         </div>
         <dl class="mt-3 grid grid-cols-3 gap-2 border-t border-outline-gray-1 pt-3 text-sm">
           <div>
@@ -65,10 +65,11 @@
 
 <script setup>
 import { computed, ref } from 'vue'
-import { Badge, Button, ErrorMessage, FormControl, createResource } from 'frappe-ui'
+import { Button, ErrorMessage, FormControl, createResource } from 'frappe-ui'
 import LucideRefreshCw from '~icons/lucide/refresh-cw'
 import PageHeader from '@/components/PageHeader.vue'
 import ResponsiveList from '@/components/ResponsiveList.vue'
+import StatusBadge from '@/components/StatusBadge.vue'
 import StatTile from '@/components/StatTile.vue'
 import { lists } from '@/data/lists'
 import { currency, date } from '@/data/format'
@@ -119,13 +120,4 @@ const columns = [
   { label: 'Status', key: 'status', type: 'badge' },
 ]
 
-const statusTheme = (status) =>
-  ({
-    Delivered: 'green',
-    Ready: 'blue',
-    Processing: 'orange',
-    'Quality Check': 'orange',
-    Collected: 'orange',
-    Draft: 'gray',
-  })[status] || 'gray'
 </script>

@@ -34,13 +34,11 @@
             </p>
             <p class="mt-0.5 text-sm text-ink-gray-5">{{ row.task_type || 'Task' }}</p>
           </div>
-          <Badge :theme="statusTheme(row.status)">{{ row.status || 'Pending' }}</Badge>
+          <StatusBadge :value="row.status || 'Pending'" />
         </div>
         <p v-if="row.notes" class="mt-2 text-sm text-ink-gray-7">{{ row.notes }}</p>
         <p class="mt-2 flex flex-wrap items-center gap-1.5 text-xs text-ink-gray-5">
-          <Badge v-if="row.priority" size="sm" :theme="priorityTheme(row.priority)">
-            {{ row.priority }}
-          </Badge>
+          <StatusBadge v-if="row.priority" :value="row.priority" />
           <span v-if="row.assigned_to">&middot; {{ row.assigned_to }}</span>
         </p>
       </template>
@@ -106,10 +104,11 @@
 
 <script setup>
 import { computed, reactive, ref } from 'vue'
-import { Badge, Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
+import { Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
 import LucidePlus from '~icons/lucide/plus'
 import PageHeader from '@/components/PageHeader.vue'
 import ResponsiveList from '@/components/ResponsiveList.vue'
+import StatusBadge from '@/components/StatusBadge.vue'
 import StatTile from '@/components/StatTile.vue'
 import { lists } from '@/data/lists'
 import { date } from '@/data/format'
@@ -164,11 +163,6 @@ const columns = [
   { label: 'Status', key: 'status', type: 'badge' },
 ]
 
-const statusTheme = (status) =>
-  ({ Completed: 'green', 'In Progress': 'blue', Cancelled: 'gray' })[status] || 'orange'
-
-const priorityTheme = (priority) =>
-  ({ Urgent: 'red', High: 'orange', Normal: 'blue', Low: 'gray' })[priority] || 'gray'
 
 const showDialog = ref(false)
 const draft = reactive({})

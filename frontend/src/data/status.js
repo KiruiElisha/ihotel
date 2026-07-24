@@ -62,6 +62,27 @@ const THEMES = {
   expired: ORANGE,
   failed: RED,
 
+  // --- Laundry Order ---
+  draft: GRAY,
+  collected: BLUE,
+  processing: ORANGE,
+  'quality check': ORANGE,
+  ready: GREEN,
+  delivered: GREEN,
+
+  // --- Group Reservation ---
+  tentative: ORANGE,
+  cutoff: RED,
+
+  // --- Supplier Batch ---
+  'pending pickup': ORANGE,
+  'with supplier': BLUE,
+  returned: BLUE,
+
+  // --- iHotel Profile (folio) ---
+  settled: GREEN,
+  transferred: GRAY,
+
   // --- In-house "Due" column (derived, not stored) ---
   staying: GREEN,
   'due out': ORANGE,

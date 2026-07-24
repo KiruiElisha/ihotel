@@ -63,7 +63,7 @@
               <div class="min-w-0">
                 <p class="flex items-center gap-2 truncate font-mono text-xs text-ink-gray-8">
                   {{ k.card_uid || '—' }}
-                  <Badge :label="k.status" :theme="statusTheme(k.status)" />
+                  <StatusBadge :value="k.status" />
                   <Badge v-if="k.is_duplicate" label="Duplicate" theme="gray" />
                 </p>
                 <p class="mt-0.5 truncate text-xs text-ink-gray-5">
@@ -90,6 +90,7 @@
 import { computed, reactive, ref, watch } from 'vue'
 import { Badge, Button, Dialog, ErrorMessage, FormControl, toast } from 'frappe-ui'
 import LucideKeyRound from '~icons/lucide/key-round'
+import StatusBadge from '@/components/StatusBadge.vue'
 import { cardSettings, encodeKey, cancelKey, listKeys } from '@/data/cards'
 import { date as fmtDate } from '@/data/format'
 
@@ -182,9 +183,6 @@ async function onCancel(k) {
   }
 }
 
-function statusTheme(status) {
-  return { Encoded: 'green', Active: 'green', Cancelled: 'gray', Expired: 'orange', Failed: 'red' }[status] || 'gray'
-}
 
 const fmt = (v) => (v ? fmtDate(v) : '—')
 

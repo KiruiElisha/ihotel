@@ -32,7 +32,7 @@
       >
         <div class="flex items-start justify-between gap-2">
           <span class="text-lg font-semibold tabular-nums">{{ room.room_number }}</span>
-          <Badge :theme="badgeTheme(room.status)">{{ room.status || '—' }}</Badge>
+          <StatusBadge :value="room.status" />
         </div>
         <p class="mt-1 truncate text-xs opacity-80">{{ room.room_type || 'No type' }}</p>
         <p class="mt-2 truncate text-sm font-medium">
@@ -95,9 +95,10 @@
 
 <script setup>
 import { computed, reactive, ref } from 'vue'
-import { Badge, Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
+import { Button, Dialog, ErrorMessage, FormControl, createResource, toast } from 'frappe-ui'
 import LucideRefreshCw from '~icons/lucide/refresh-cw'
 import PageHeader from '@/components/PageHeader.vue'
+import StatusBadge from '@/components/StatusBadge.vue'
 import { date } from '@/data/format'
 
 const board = createResource({
@@ -156,8 +157,6 @@ const tone = (status) =>
     out: 'border-red-200 bg-red-50 text-red-900',
   })[group(status)] || 'border-outline-gray-2 bg-surface-white text-ink-gray-8'
 
-const badgeTheme = (status) =>
-  ({ clean: 'green', occupied: 'blue', dirty: 'orange', out: 'red' })[group(status)] || 'gray'
 
 const showRoom = ref(false)
 const selected = ref({})
