@@ -10,7 +10,9 @@ frappe.listview_settings["Laundry Order"] = {
 			"Quality Check": "yellow",
 			"Ready": "green",
 			"Delivered": "darkgreen",
-			"Cancelled": "red",
+			// Grey, not red: cancelling is a deliberate, inactive end state —
+			// the same meaning it carries in every other iHotel list view.
+			"Cancelled": "grey",
 		};
 		return [__(doc.status), colour_map[doc.status] || "grey", "status,=," + doc.status];
 	},
