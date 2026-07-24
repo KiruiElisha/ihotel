@@ -10,7 +10,9 @@ const routes = [
   { path: '/housekeeping', name: 'Housekeeping', component: () => import('@/pages/Housekeeping.vue') },
   { path: '/maintenance', name: 'Maintenance', component: () => import('@/pages/Maintenance.vue') },
   { path: '/laundry', name: 'Laundry', component: () => import('@/pages/Laundry.vue') },
+  { path: '/key-cards', name: 'KeyCards', component: () => import('@/pages/KeyCards.vue') },
   { path: '/night-audit', name: 'NightAudit', component: () => import('@/pages/NightAudit.vue') },
+  { path: '/reports', name: 'Reports', component: () => import('@/pages/Reports.vue') },
   { path: '/no-access', name: 'NoAccess', component: () => import('@/pages/NoAccess.vue') },
   { path: '/:pathMatch(.*)*', redirect: '/' },
 ]

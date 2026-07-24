@@ -19,10 +19,11 @@
         <div class="grid grid-cols-2 gap-3 md:grid-cols-4">
           <StatTile
             label="Occupancy"
+            tone="blue"
             :value="percent(d.rooms.occupancy_pct, 0)"
             :hint="`${d.rooms.occupied} of ${d.rooms.total} rooms`"
           />
-          <StatTile label="Available" :value="d.rooms.available" hint="Ready to sell" />
+          <StatTile label="Available" tone="green" :value="d.rooms.available" hint="Ready to sell" />
           <StatTile label="In House" :value="d.in_house" hint="Guests staying now" />
           <StatTile
             label="Revenue Today"
@@ -39,11 +40,13 @@
           <StatTile label="RevPAR" :value="currency(d.revpar)" hint="Per available room" />
           <StatTile
             label="Arrivals Pending"
+            :tone="d.arrivals_pending ? 'orange' : 'white'"
             :value="d.arrivals_pending"
             :hint="`${d.arrivals.length} due in today`"
           />
           <StatTile
             label="Rooms to Clean"
+            :tone="d.rooms.dirty ? 'orange' : 'white'"
             :value="d.rooms.dirty"
             :hint="d.rooms.out_of_order ? `${d.rooms.out_of_order} out of order` : 'None out of order'"
           />
@@ -58,8 +61,12 @@
             :value="d.housekeeping_open"
             :hint="`${percent(d.housekeeping_pct, 0)} done`"
           />
-          <StatTile label="Housekeeping Done" :value="d.housekeeping_done" />
-          <StatTile label="Maintenance Open" :value="d.maintenance_open" />
+          <StatTile label="Housekeeping Done" tone="green" :value="d.housekeeping_done" />
+          <StatTile
+            label="Maintenance Open"
+            :tone="d.maintenance_open ? 'red' : 'white'"
+            :value="d.maintenance_open"
+          />
           <StatTile label="Departures" :value="d.departures.length" hint="Due out today" />
         </div>
       </section>

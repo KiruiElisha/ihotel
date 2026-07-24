@@ -158,10 +158,10 @@ const rows = computed(() => {
 const columns = [
   { label: 'Room', key: 'room' },
   { label: 'Task', key: 'task_type', width: 2 },
-  { label: 'Priority', key: 'priority' },
+  { label: 'Priority', key: 'priority', type: 'badge' },
   { label: 'Assigned to', key: 'assigned_to' },
   { label: 'Raised', key: 'creation', getLabel: ({ row }) => date(row.creation) },
-  { label: 'Status', key: 'status' },
+  { label: 'Status', key: 'status', type: 'badge' },
 ]
 
 const statusTheme = (status) =>

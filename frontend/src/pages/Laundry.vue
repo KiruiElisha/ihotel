@@ -116,7 +116,7 @@ const columns = [
     align: 'right',
     getLabel: ({ row }) => currency(row.total_amount),
   },
-  { label: 'Status', key: 'status' },
+  { label: 'Status', key: 'status', type: 'badge' },
 ]
 
 const statusTheme = (status) =>

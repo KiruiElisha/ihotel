@@ -68,6 +68,8 @@ import LucideDoorOpen from '~icons/lucide/door-open'
 import LucideWrench from '~icons/lucide/wrench'
 import LucideShirt from '~icons/lucide/shirt'
 import LucideMoonStar from '~icons/lucide/moon-star'
+import LucideKeyRound from '~icons/lucide/key-round'
+import LucideFileBarChart from '~icons/lucide/file-bar-chart'
 import LucideLogOut from '~icons/lucide/log-out'
 import LucideExternalLink from '~icons/lucide/external-link'
 import LucidePalette from '~icons/lucide/palette'
@@ -130,9 +132,11 @@ const operationsItems = [
   { label: 'Housekeeping', icon: LucideSparkles, to: { name: 'Housekeeping' } },
   { label: 'Maintenance', icon: LucideWrench, to: { name: 'Maintenance' } },
   { label: 'Laundry', icon: LucideShirt, to: { name: 'Laundry' } },
+  { label: 'Key Cards', icon: LucideKeyRound, to: { name: 'KeyCards' } },
 ]
 
 const reportingItems = [
+  { label: 'Reports', icon: LucideFileBarChart, to: { name: 'Reports' } },
   { label: 'Night Audit', icon: LucideMoonStar, to: { name: 'NightAudit' } },
 ]
 

@@ -148,7 +148,7 @@ const rows = computed(() => {
 const columns = [
   { label: 'Room', key: 'room_number' },
   { label: 'Category', key: 'category', width: 2 },
-  { label: 'Priority', key: 'priority' },
+  { label: 'Priority', key: 'priority', type: 'badge' },
   { label: 'Assigned to', key: 'assigned_to' },
   {
     label: 'Reported',
@@ -161,7 +161,7 @@ const columns = [
     align: 'right',
     getLabel: ({ row }) => (row.estimated_cost ? currency(row.estimated_cost) : ''),
   },
-  { label: 'Status', key: 'status' },
+  { label: 'Status', key: 'status', type: 'badge' },
 ]
 
 const statusTheme = (status) =>

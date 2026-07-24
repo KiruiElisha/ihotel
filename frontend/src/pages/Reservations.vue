@@ -161,7 +161,7 @@ const columns = [
     align: 'right',
     getLabel: ({ row }) => currency(row.total_charges),
   },
-  { label: 'Status', key: 'status', getLabel: ({ row }) => statusLabel(row.status) },
+  { label: 'Status', key: 'status', type: 'badge' },
 ]
 
 // Reservation.status is stored lowercase (pending / confirmed / checked_in /

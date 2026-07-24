@@ -168,7 +168,7 @@ const columns = [
     align: 'right',
     getLabel: ({ row }) => currency(row.total_amount),
   },
-  { label: 'Due', key: 'due', getLabel: ({ row }) => dueLabel(row) },
+  { label: 'Due', key: 'due', type: 'badge', getLabel: ({ row }) => dueLabel(row) },
 ]
 
 const showStay = ref(false)

@@ -35,7 +35,21 @@
         onRowClick,
         emptyState,
       }"
-    />
+    >
+      <!-- Columns declared as `type: 'badge'` render as a coloured status pill
+           instead of plain text, so state is scannable down the column.
+           This slot replaces the default renderer for EVERY cell, so the
+           non-badge branch reproduces frappe-ui's own label resolution
+           (column.getLabel first, then an object's .label, then the raw value)
+           — otherwise formatted columns like dates and currency would fall
+           back to their raw values. -->
+      <template #cell="{ item, row, column }">
+        <div class="flex items-center gap-2" :class="alignClass(column)">
+          <StatusBadge v-if="column.type === 'badge'" :value="badgeValue(row, column, item)" />
+          <div v-else class="truncate text-base">{{ cellLabel(row, column, item) }}</div>
+        </div>
+      </template>
+    </ListView>
   </div>
 </template>
 
@@ -43,6 +57,7 @@
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { ListView } from 'frappe-ui'
+import StatusBadge from '@/components/StatusBadge.vue'
 
 const props = defineProps({
   columns: { type: Array, required: true },
@@ -59,6 +74,24 @@ const props = defineProps({
 const router = useRouter()
 
 const interactive = computed(() => Boolean(props.onRowClick || props.getRowRoute))
+
+// A badge column colours by the raw stored value (e.g. "checked_in"), not the
+// formatted label a getLabel may have produced. Derived columns carry no stored
+// value, so fall back to the rendered item.
+function badgeValue(row, column, item) {
+  return row?.[column.key] ?? item
+}
+
+// Mirrors frappe-ui ListRowItem's label resolution so overriding the cell slot
+// does not silently drop getLabel formatting.
+function cellLabel(row, column, item) {
+  if (column?.getLabel) return column.getLabel({ row })
+  if (item && typeof item === 'object') return item.label ?? ''
+  return item ?? ''
+}
+
+const ALIGN = { left: 'justify-start', center: 'justify-center', right: 'justify-end' }
+const alignClass = (column) => ALIGN[column?.align] || ALIGN.left
 
 function select(row) {
   if (props.onRowClick) props.onRowClick(row)

@@ -335,6 +335,43 @@ def list_keys(
 	return rows
 
 
+@frappe.whitelist()
+def get_key_cards(status: str | None = None, search: str | None = None, limit: int = 200) -> dict:
+	"""All issued key cards for the Key Cards page, with a status summary."""
+	require_hotel_user()
+	filters = {}
+	if status:
+		filters["status"] = status
+
+	rows = frappe.get_all(
+		"Key Card",
+		filters=filters,
+		fields=[
+			"name", "guest", "guest_name", "room", "card_uid", "vendor",
+			"access_level", "status", "valid_from", "valid_to", "is_duplicate",
+			"encoded_on", "encoded_by", "error_message",
+		],
+		order_by="creation desc",
+		limit=int(limit),
+	)
+
+	if search:
+		needle = search.lower()
+		rows = [
+			r
+			for r in rows
+			if needle in (r.get("guest_name") or "").lower()
+			or needle in (r.get("room") or "").lower()
+			or needle in (r.get("card_uid") or "").lower()
+		]
+
+	totals = {"total": len(rows)}
+	for state in ("Encoded", "Active", "Cancelled", "Expired", "Failed"):
+		totals[state.lower()] = sum(1 for r in rows if r.get("status") == state)
+
+	return {"keys": rows, "totals": totals}
+
+
 def _current_vendor(settings) -> str:
 	return getattr(settings, "key_encoder_vendor", "Mock") or "Mock"
 
